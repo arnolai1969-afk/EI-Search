@@ -1,0 +1,678 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>JCR Journal Search Report</title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2113.65">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000; background-color: #ffffff; min-height: 14.0px}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #000000; -webkit-text-stroke: #3874c0; background-color: #ffffff}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #000000; -webkit-text-stroke: #7cc8fd; background-color: #ffffff}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #000000; -webkit-text-stroke: #b36a52; background-color: #ffffff}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #000000; -webkit-text-stroke: #bebebe; background-color: #ffffff}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #000000; -webkit-text-stroke: #bebebe; background-color: #ffffff; min-height: 16.0px}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #000000; -webkit-text-stroke: #5a6065; background-color: #ffffff}
+    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #000000; -webkit-text-stroke: #a651f5; background-color: #ffffff}
+    span.s1 {font-kerning: none}
+    span.s2 {font-kerning: none; -webkit-text-stroke: 0px #7cc8fd}
+    span.s3 {font-kerning: none; -webkit-text-stroke: 0px #5a5a5a}
+    span.s4 {font-kerning: none; -webkit-text-stroke: 0px #bebebe}
+    span.s5 {font-kerning: none; -webkit-text-stroke: 0px #b36a52}
+    span.s6 {font-kerning: none; -webkit-text-stroke: 0px #3874c0}
+    span.s7 {font-kerning: none; -webkit-text-stroke: 0px #cacaca}
+    span.s8 {font-kerning: none; -webkit-text-stroke: 0px #97bb86}
+    span.s9 {font-kerning: none; -webkit-text-stroke: 0px #a651f5}
+    span.s10 {font: 14.0px 'PingFang TC'; font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1"></span><br></p>
+<p class="p2"><span class="s1">&lt;!DOCTYPE</span><span class="s2"> html</span><span class="s1">&gt;</span></p>
+<p class="p2"><span class="s3">&lt;</span><span class="s1">html</span><span class="s4"> </span><span class="s2">lang</span><span class="s3">=</span><span class="s5">"en"</span><span class="s3">&gt;</span></p>
+<p class="p2"><span class="s3">&lt;</span><span class="s1">head</span><span class="s3">&gt;</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">meta</span><span class="s4"> </span><span class="s1">charset</span><span class="s3">=</span><span class="s5">"UTF-8"</span><span class="s3">&gt;</span></p>
+<p class="p4"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">meta</span><span class="s4"> </span><span class="s2">name</span><span class="s3">=</span><span class="s1">"viewport"</span><span class="s4"> </span><span class="s2">content</span><span class="s3">=</span><span class="s1">"width=device-width, initial-scale=1.0"</span><span class="s3">&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">title</span><span class="s3">&gt;</span><span class="s1">EI Compendex Search Dashboard</span><span class="s3">&lt;/</span><span class="s6">title</span><span class="s3">&gt;</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p7"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- 1. Tailwind CSS --&gt;</span></p>
+<p class="p4"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://cdn.tailwindcss.com"</span><span class="s3">&gt;&lt;/</span><span class="s6">script</span><span class="s3">&gt;</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p7"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- 2. React &amp; ReactDOM --&gt;</span></p>
+<p class="p4"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">crossorigin</span><span class="s4"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://unpkg.com/react@18/umd/react.production.min.js"</span><span class="s3">&gt;&lt;/</span><span class="s6">script</span><span class="s3">&gt;</span></p>
+<p class="p4"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">crossorigin</span><span class="s4"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"</span><span class="s3">&gt;&lt;/</span><span class="s6">script</span><span class="s3">&gt;</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p7"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- 3. Babel (for JSX) --&gt;</span></p>
+<p class="p4"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://unpkg.com/@babel/standalone/babel.min.js"</span><span class="s3">&gt;&lt;/</span><span class="s6">script</span><span class="s3">&gt;</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p7"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- 4. SheetJS (Excel) --&gt;</span></p>
+<p class="p4"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">src</span><span class="s3">=</span><span class="s1">"https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"</span><span class="s3">&gt;&lt;/</span><span class="s6">script</span><span class="s3">&gt;</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p7"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s1">&lt;!-- 5. Lucide Icons (REMOVED external dependency to fix crash) --&gt;</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p2"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s1">style</span><span class="s3">&gt;</span></p>
+<p class="p7"><span class="s4"><span class="Apple-converted-space">        </span></span><span class="s1">/* Print Styles from your original code */</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>@</span><span class="s6">media</span><span class="s1"> </span><span class="s6">print</span><span class="s1"> </span><span class="s7">{</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">          </span>@page { </span><span class="s2">size:</span><span class="s1"> </span><span class="s5">landscape</span><span class="s7">;</span><span class="s1"> </span><span class="s2">margin:</span><span class="s1"> </span><span class="s8">10mm</span><span class="s7">;</span><span class="s1"> </span><span class="s7">}</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">          </span></span><span class="s6">body</span><span class="s4"> </span><span class="s7">{</span><span class="s4"> </span><span class="s1">-webkit-print-color-adjust:</span><span class="s4"> </span><span class="s5">exact</span><span class="s7">;</span><span class="s4"> </span><span class="s1">background-color:</span><span class="s4"> </span><span class="s5">white</span><span class="s4"> </span><span class="s9">!important</span><span class="s7">;</span><span class="s4"> </span><span class="s7">}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">          </span></span><span class="s6">.no-print</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> </span><span class="s2">display:</span><span class="s1"> </span><span class="s5">none</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span><span class="s1"> </span><span class="s7">}</span></p>
+<p class="p8"><span class="s4"><span class="Apple-converted-space">          </span></span><span class="s6">.print-visible</span><span class="s4"> </span><span class="s7">{</span><span class="s4"> </span><span class="s2">overflow:</span><span class="s4"> </span><span class="s5">visible</span><span class="s4"> </span><span class="s1">!important</span><span class="s7">;</span><span class="s4"> </span><span class="s2">height:</span><span class="s4"> </span><span class="s5">auto</span><span class="s4"> </span><span class="s1">!important</span><span class="s7">;</span><span class="s4"> </span><span class="s2">display:</span><span class="s4"> </span><span class="s5">block</span><span class="s4"> </span><span class="s1">!important</span><span class="s7">;</span><span class="s4"> </span><span class="s7">}</span></p>
+<p class="p8"><span class="s4"><span class="Apple-converted-space">          </span></span><span class="s6">.virtual-container</span><span class="s4"> </span><span class="s7">{</span><span class="s4"> </span><span class="s2">position:</span><span class="s4"> </span><span class="s5">static</span><span class="s4"> </span><span class="s1">!important</span><span class="s7">;</span><span class="s4"> </span><span class="s2">height:</span><span class="s4"> </span><span class="s5">auto</span><span class="s4"> </span><span class="s1">!important</span><span class="s7">;</span><span class="s4"> </span><span class="s2">overflow:</span><span class="s4"> </span><span class="s5">visible</span><span class="s4"> </span><span class="s1">!important</span><span class="s7">;</span><span class="s4"> </span><span class="s7">}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">          </span></span><span class="s6">.virtual-spacer</span><span class="s1"> </span><span class="s7">{</span><span class="s1"> </span><span class="s2">display:</span><span class="s1"> </span><span class="s5">none</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span><span class="s1"> </span><span class="s7">}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">          </span></span><span class="s6">.print-row</span><span class="s1"> </span><span class="s7">{</span></p>
+<p class="p3"><span class="s4"><span class="Apple-converted-space">             </span></span><span class="s1">page-break-inside:</span><span class="s4"> </span><span class="s5">avoid</span><span class="s7">;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">             </span></span><span class="s2">padding-top:</span><span class="s1"> </span><span class="s8">15px</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">             </span></span><span class="s2">padding-bottom:</span><span class="s1"> </span><span class="s8">15px</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">             </span></span><span class="s2">display:</span><span class="s1"> </span><span class="s5">flex</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">             </span></span><span class="s2">align-items:</span><span class="s1"> </span><span class="s5">flex-start</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">          </span></span><span class="s7">}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">          </span></span><span class="s6">.print-row</span><span class="s1"> </span><span class="s6">div</span><span class="s1"> </span><span class="s7">{</span><span class="s1"><span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">             </span></span><span class="s2">white-space:</span><span class="s1"> </span><span class="s5">normal</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">             </span></span><span class="s2">overflow:</span><span class="s1"> </span><span class="s5">visible</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span><span class="s1"><span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">             </span></span><span class="s2">text-overflow:</span><span class="s1"> </span><span class="s5">clip</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">             </span></span><span class="s2">line-height:</span><span class="s1"> </span><span class="s8">1.5</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">             </span></span><span class="s2">height:</span><span class="s1"> </span><span class="s5">auto</span><span class="s1"> </span><span class="s9">!important</span><span class="s7">;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">          </span></span><span class="s7">}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">style</span><span class="s3">&gt;</span></p>
+<p class="p2"><span class="s3">&lt;/</span><span class="s1">head</span><span class="s3">&gt;</span></p>
+<p class="p4"><span class="s3">&lt;</span><span class="s6">body</span><span class="s4"> </span><span class="s2">class</span><span class="s3">=</span><span class="s1">"bg-[#f8f9fa]"</span><span class="s3">&gt;</span></p>
+<p class="p4"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">div</span><span class="s4"> </span><span class="s2">id</span><span class="s3">=</span><span class="s1">"root"</span><span class="s3">&gt;&lt;/</span><span class="s6">div</span><span class="s3">&gt;</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p4"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;</span><span class="s6">script</span><span class="s4"> </span><span class="s2">type</span><span class="s3">=</span><span class="s1">"text/babel"</span><span class="s3">&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// ==========================================================</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// 1. SETUP &amp; IMPORTS (Converted for Browser)</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// ==========================================================</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const { useState, useMemo, useEffect, useRef, useCallback } = React;</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// ==========================================================</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// INTERNAL ICONS (Replaces Lucide-React to prevent UMD errors)</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// ==========================================================</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const Icon = ({ path, className, spin }) =&gt; (</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>&lt;svg<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>xmlns="http://www.w3.org/2000/svg"<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>width="24" height="24"<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>viewBox="0 0 24 24"<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>fill="none"<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>stroke="currentColor"<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>strokeWidth="2"<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>strokeLinecap="round"<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>strokeLinejoin="round"<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>className={`${className || ""} ${spin ? "animate-spin" : ""}`}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;g dangerouslySetInnerHTML={{ __html: path }} /&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/svg&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>);</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// Icon Paths (Extracted from Lucide)</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const ICONS_PATH = {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>Search: '&lt;circle cx="11" cy="11" r="8"/&gt;&lt;path d="m21 21-4.3-4.3"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>Upload: '&lt;path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/&gt;&lt;polyline points="17 8 12 3 7 8"/&gt;&lt;line x1="12" x2="12" y1="3" y2="15"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>Database: '&lt;ellipse cx="12" cy="5" rx="9" ry="3"/&gt;&lt;path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/&gt;&lt;path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>CheckCircle: '&lt;path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/&gt;&lt;polyline points="22 4 12 14.01 9 11.01"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>ShieldCheck: '&lt;path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/&gt;&lt;path d="m9 12 2 2 4-4"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>FileSpreadsheet: '&lt;path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/&gt;&lt;polyline points="14 2 14 8 20 8"/&gt;&lt;path d="M8 13h2"/&gt;&lt;path d="M8 17h2"/&gt;&lt;path d="M14 13h2"/&gt;&lt;path d="M14 17h2"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>RefreshCw: '&lt;path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/&gt;&lt;path d="M21 3v5h-5"/&gt;&lt;path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/&gt;&lt;path d="M8 16H3v5"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>X: '&lt;path d="M18 6 6 18"/&gt;&lt;path d="m6 6 12 12"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>Save: '&lt;path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/&gt;&lt;polyline points="17 21 17 13 7 13 7 21"/&gt;&lt;polyline points="7 3 7 8 15 8"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>BookOpen: '&lt;path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/&gt;&lt;path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>Globe: '&lt;circle cx="12" cy="12" r="10"/&gt;&lt;path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/&gt;&lt;path d="M2 12h20"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>MapPin: '&lt;path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/&gt;&lt;circle cx="12" cy="10" r="3"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>Printer: '&lt;polyline points="6 9 6 2 18 2 18 9"/&gt;&lt;path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/&gt;&lt;rect width="12" height="8" x="6" y="14"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>Cloud: '&lt;path d="M17.5 19c0-3.037-2.463-5.5-5.5-5.5S6.5 15.963 6.5 19"/&gt;&lt;path d="M17.5 19c2.485 0 4.5-2.015 4.5-4.5S19.985 10 17.5 10c-.17 0-.335.01-.5.03"/&gt;&lt;path d="M6.5 19C4.015 19 2 16.985 2 14.5S4.015 10 6.5 10c.17 0 .335.01.5.03"/&gt;&lt;path d="M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>Server: '&lt;rect width="20" height="8" x="2" y="2" rx="2" ry="2"/&gt;&lt;rect width="20" height="8" x="2" y="14" rx="2" ry="2"/&gt;&lt;line x1="6" x2="6.01" y1="6" y2="6"/&gt;&lt;line x1="6" x2="6.01" y1="18" y2="18"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>AlertTriangle: '&lt;path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/&gt;&lt;path d="M12 9v4"/&gt;&lt;path d="M12 17h.01"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>Download: '&lt;path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/&gt;&lt;polyline points="7 10 12 15 17 10"/&gt;&lt;line x1="12" x2="12" y1="15" y2="3"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>Lock: '&lt;rect width="18" height="11" x="3" y="11" rx="2" ry="2"/&gt;&lt;path d="M7 11V7a5 5 0 0 1 10 0v4"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>HelpCircle: '&lt;circle cx="12" cy="12" r="10"/&gt;&lt;path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/&gt;&lt;path d="M12 17h.01"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>ChevronRight: '&lt;path d="m9 18 6-6-6-6"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>FileX: '&lt;path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/&gt;&lt;polyline points="14 2 14 8 20 8"/&gt;&lt;path d="m9.5 12.5 5 5"/&gt;&lt;path d="m14.5 12.5-5 5"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>KeyRound: '&lt;path d="M2 18v3c0 .6.4 1 1 1h4v-3h3v-3h2l1.4-1.4a6.5 6.5 0 1 0-4-4Z"/&gt;&lt;circle cx="16.5" cy="7.5" r=".5"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>ExternalLink: '&lt;path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/&gt;&lt;polyline points="15 3 21 3 21 9"/&gt;&lt;line x1="10" x2="21" y1="14" y2="3"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>Network: '&lt;rect x="16" y="16" width="6" height="6" rx="1"/&gt;&lt;rect x="2" y="16" width="6" height="6" rx="1"/&gt;&lt;rect x="9" y="2" width="6" height="6" rx="1"/&gt;&lt;path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/&gt;&lt;path d="M12 12V8"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>Settings: '&lt;path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.47a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.35a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/&gt;&lt;circle cx="12" cy="12" r="3"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>Link: '&lt;path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/&gt;&lt;path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/&gt;',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>Loader: '&lt;path d="M21 12a9 9 0 1 1-6.219-8.56"/&gt;'</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// Component Wrapper to match original API</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const Search = (props) =&gt; &lt;Icon path={ICONS_PATH.Search} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const Upload = (props) =&gt; &lt;Icon path={ICONS_PATH.Upload} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const Database = (props) =&gt; &lt;Icon path={ICONS_PATH.Database} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const CheckCircle = (props) =&gt; &lt;Icon path={ICONS_PATH.CheckCircle} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const ShieldCheck = (props) =&gt; &lt;Icon path={ICONS_PATH.ShieldCheck} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const FileSpreadsheet = (props) =&gt; &lt;Icon path={ICONS_PATH.FileSpreadsheet} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const RefreshCw = (props) =&gt; &lt;Icon path={ICONS_PATH.RefreshCw} {...props} spin={props.className?.includes('animate-spin')} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const X = (props) =&gt; &lt;Icon path={ICONS_PATH.X} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const Save = (props) =&gt; &lt;Icon path={ICONS_PATH.Save} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const BookOpen = (props) =&gt; &lt;Icon path={ICONS_PATH.BookOpen} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const Globe = (props) =&gt; &lt;Icon path={ICONS_PATH.Globe} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const MapPin = (props) =&gt; &lt;Icon path={ICONS_PATH.MapPin} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const Printer = (props) =&gt; &lt;Icon path={ICONS_PATH.Printer} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const Cloud = (props) =&gt; &lt;Icon path={ICONS_PATH.Cloud} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const Server = (props) =&gt; &lt;Icon path={ICONS_PATH.Server} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const AlertTriangle = (props) =&gt; &lt;Icon path={ICONS_PATH.AlertTriangle} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const Download = (props) =&gt; &lt;Icon path={ICONS_PATH.Download} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const Lock = (props) =&gt; &lt;Icon path={ICONS_PATH.Lock} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const HelpCircle = (props) =&gt; &lt;Icon path={ICONS_PATH.HelpCircle} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const ChevronRight = (props) =&gt; &lt;Icon path={ICONS_PATH.ChevronRight} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const FileX = (props) =&gt; &lt;Icon path={ICONS_PATH.FileX} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const KeyRound = (props) =&gt; &lt;Icon path={ICONS_PATH.KeyRound} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const ExternalLink = (props) =&gt; &lt;Icon path={ICONS_PATH.ExternalLink} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const Network = (props) =&gt; &lt;Icon path={ICONS_PATH.Network} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const Settings = (props) =&gt; &lt;Icon path={ICONS_PATH.Settings} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const LinkIcon = (props) =&gt; &lt;Icon path={ICONS_PATH.Link} {...props} /&gt;;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const Loader = (props) =&gt; &lt;Icon path={ICONS_PATH.Loader} {...props} spin={true} /&gt;;</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// ==========================================================================================</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// [CLOUD LINK CONFIGURATION]</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const DATABASE_URL = "https://www.dropbox.com/scl/fi/m366wi6658lm1kg0l59dq/CPXSourceList_102025.xlsx?rlkey=k48iig1j6lcctmtdnkrgfke3l&amp;st=zavye5rl&amp;dl=0";<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// ==========================================================================================</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const DEMO_DATABASE = [</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>{ id: 'd1', title: 'Nature', issn: '0028-0836', eissn: '1476-4687', publisher: 'Nature Publishing Group', country: 'United Kingdom', language: 'English' },</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>{ id: 'd2', title: 'IEEE Transactions on Pattern Analysis and Machine Intelligence', issn: '0162-8828', eissn: '1939-3539', publisher: 'IEEE', country: 'USA', language: 'English' },</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>{ id: 'd3', title: 'Acta Automatica Sinica', issn: '0254-4156', eissn: '-', publisher: 'Science Press', country: 'China', language: 'Chinese' },</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>];</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// --- Web Worker Code ---</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const workerCode = `</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>importScripts('https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js');</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const sanitize = (str) =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>if (!str) return '';</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>return String(str)</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>.replace(/[\\u00A0\\u1680\\u180e\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff]/g, ' ')</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>.replace(/\\s+/g, ' ')</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>.trim();</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>self.onmessage = function(e) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const { data, type } = e.data;</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>if (type === 'PARSE') {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>try {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const workbook = XLSX.read(data, { type: 'array' });</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const allRows = [];</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>let uniqueIdCounter = 0;</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>workbook.SheetNames.forEach(sheetName =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const worksheet = workbook.Sheets[sheetName];</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>let headerIdx = -1;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>let colMap = {};</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>for (let i = 0; i &lt; Math.min(rawData.length, 100); i++) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const row = (rawData[i] || []).map(c =&gt; sanitize(c).toLowerCase());</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>if (row.some(cell =&gt; cell.includes('source title') || cell === 'issn' || cell.includes('print issn') || cell.includes('isbn'))) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>headerIdx = i;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>rawData[headerIdx].forEach((cell, cellIdx) =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>const c = sanitize(cell).toLowerCase();</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (c.includes('source title') || c.includes('meeting title')) colMap.title = cellIdx;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (c === 'issn' || c.includes('print issn')) colMap.issn = cellIdx;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (c.includes('online issn') || c === 'eissn') colMap.eissn = cellIdx;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (c.includes('publisher')) colMap.publisher = cellIdx;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (c.includes('country') || c.includes('region') || c.includes('location')) colMap.country = cellIdx;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (c.includes('language') || c === '</span><span class="s10">语言</span><span class="s1">') colMap.lang = cellIdx;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (c.includes('isbn')) colMap.isbn = cellIdx;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (c.includes('chinese title') || c.includes('</span><span class="s10">中文刊名</span><span class="s1">')) colMap.chTitle = cellIdx;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (c.includes('english/translated') || c.includes('</span><span class="s10">英文刊名</span><span class="s1">')) colMap.engTitle = cellIdx;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>});</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>break;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>if (headerIdx !== -1) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const rows = rawData.slice(headerIdx + 1);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const getVal = (row, key) =&gt; sanitize(row[colMap[key]] || '');</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const formattedRows = rows.map(r =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>let title = getVal(r, 'title');</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (!title) return null;</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>let issn = getVal(r, 'issn') || '-';</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>let eissn = getVal(r, 'eissn') || '-';</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>let pub = getVal(r, 'publisher') || '-';</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>let country = getVal(r, 'country') || '-';</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>let lang = getVal(r, 'lang') || '-';</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (colMap.chTitle !== undefined) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>const chTitle = getVal(r, 'chTitle');</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>const engTitle = getVal(r, 'engTitle');</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (chTitle) title = \`\${chTitle} (\${engTitle})\`;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (country === '-') country = 'China';</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (colMap.isbn !== undefined) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>const isbn = getVal(r, 'isbn');</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>if (isbn &amp;&amp; issn === '-') issn = \`ISBN: \${isbn}\`;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>return {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>id: \`row-\${uniqueIdCounter++}\`,</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>title, issn, eissn, publisher: pub, country, language: lang</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>};</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>}).filter(r =&gt; r !== null);</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>allRows.push(...formattedRows);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>self.postMessage({ success: true, rows: allRows });</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>} catch (err) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>self.postMessage({ success: false, error: err.message });</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>`;</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// ==========================================================</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// 2. MAIN COMPONENT (App)</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// ==========================================================</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const App = () =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const [unifiedData, setUnifiedData] = useState(DEMO_DATABASE);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const [displayData, setDisplayData] = useState(DEMO_DATABASE);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const [inputValue, setInputValue] = useState('');</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const [debouncedTerm, setDebouncedTerm] = useState('');<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const [isParsing, setIsParsing] = useState(false);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const [loadingStatus, setLoadingStatus] = useState('');</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const [errorMsg, setErrorMsg] = useState(null);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const [showSettings, setShowSettings] = useState(false);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const [cloudUrl, setCloudUrl] = useState(DATABASE_URL);</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const [stats, setStats] = useState({<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>total: DEMO_DATABASE.length,<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>lastUpdated: '-',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>source: 'INIT',</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>filename: ''<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const [isFileLoaded, setIsFileLoaded] = useState(false);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const [isPrinting, setIsPrinting] = useState(false);</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const workerRef = useRef(null);</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const parseDatabaseVersion = useCallback((str) =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>try {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>if (!str) return new Date().toLocaleDateString();</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const match = str.match(/_(\d{2})(\d{4})/);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>if (match) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>const date = new Date(match[2], parseInt(match[1], 10) - 1);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>return `${date.toLocaleString('en-US', { month: 'long' })} ${match[2]}`;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>return new Date().toLocaleDateString();</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>} catch { return "Unknown"; }</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>}, []);</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>useEffect(() =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const blob = new Blob([workerCode], { type: 'application/javascript' });</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>workerRef.current = new Worker(URL.createObjectURL(blob));</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>workerRef.current.onmessage = (e) =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const { success, rows, error } = e.data;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>if (success) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>setUnifiedData(rows);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>setDisplayData(rows);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>setStats(prev =&gt; ({</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>...prev,</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>total: rows.length,</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>lastUpdated: parseDatabaseVersion(prev.filename || "Uploaded File")</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>}));</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>setIsFileLoaded(true);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>} else {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>setErrorMsg({ text: String(error), code: "WORKER_ERR" });</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setIsParsing(false);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setLoadingStatus('');</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>};</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>return () =&gt; workerRef.current.terminate();</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>}, [parseDatabaseVersion]);</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>useEffect(() =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>if (cloudUrl &amp;&amp; !isFileLoaded) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>handleCloudFetch();</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>}, []);</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>useEffect(() =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const timer = setTimeout(() =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setDebouncedTerm(inputValue);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>if (!inputValue.trim()) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>setDisplayData(unifiedData);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>} else {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>const query = inputValue.toLowerCase().trim();</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>// 1. </span><span class="s10">查詢時僅限於</span><span class="s1"> </span><span class="s10">由</span><span class="s1"> source title </span><span class="s10">欄位查詢</span><span class="s1"> </span><span class="s10">不需要查詢其他欄位是否符合</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>const filtered = unifiedData.filter(item =&gt;<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>(item.title &amp;&amp; item.title.toLowerCase().includes(query))</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>setDisplayData(filtered);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>}, 300);</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>return () =&gt; clearTimeout(timer);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>}, [inputValue, unifiedData]);</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const handleCloudFetch = async () =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setIsParsing(true);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setLoadingStatus('Connecting to Cloud...');</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setErrorMsg(null);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setShowSettings(false);</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>let targetUrl = cloudUrl;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>if (targetUrl.includes('dropbox.com')) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>targetUrl = targetUrl.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('dl=0', 'dl=1');</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>try {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const response = await fetch(targetUrl);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>if (!response.ok) throw new Error(`Server Error: ${response.status}`);</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const contentType = response.headers.get("content-type");</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>if (contentType &amp;&amp; contentType.includes("text/html")) throw new Error("URL returned a webpage.");</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setLoadingStatus('Fetching Database File ...');</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const buffer = await response.arrayBuffer();</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setStats(prev =&gt; ({ ...prev, filename: targetUrl, source: 'CLOUD_URL' }));</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>workerRef.current.postMessage({ type: 'PARSE', data: new Uint8Array(buffer) });</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>} catch (error) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>console.warn("Fetch error:", error);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>let userText = error.message;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>let code = "UNKNOWN";</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>if (error.message.includes("Failed to fetch")) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>userText = "Connection Blocked (CORS).";</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>code = "CORS_BLOCK";</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setErrorMsg({ text: userText, code: code });</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setIsParsing(false);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const handleFileUpload = (e) =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const file = e.target.files[0];</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>if (!file) return;</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setIsParsing(true);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setLoadingStatus('Reading File...');</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setErrorMsg(null);</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const reader = new FileReader();</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>reader.onload = (event) =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setLoadingStatus('Processing Data in Background...');</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setStats(prev =&gt; ({ ...prev, filename: file.name, source: 'MANUAL_UPLOAD' }));</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>workerRef.current.postMessage({ type: 'PARSE', data: new Uint8Array(event.target.result) });</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>};</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>reader.readAsArrayBuffer(file);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const handlePrint = () =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setIsPrinting(true);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setTimeout(() =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>window.print();</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setIsPrinting(false);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>}, 500);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>return (</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="flex flex-col h-screen bg-[#f8f9fa] text-gray-800 font-sans select-none overflow-hidden print:h-auto print:overflow-visible print:bg-white"&gt;</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>{/* Header */}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm shrink-0 gap-4 no-print"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="flex items-center gap-3 shrink-0"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="bg-slate-800 p-2 rounded-lg"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;Database className="text-white w-5 h-5" /&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;h1 className="text-lg font-bold text-slate-900 tracking-tight"&gt;EI Compendex Search&lt;/h1&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="flex items-center gap-2 text-[10px] text-slate-500"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span className="flex items-center gap-1"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;CheckCircle className="w-3 h-3 text-emerald-600" /&gt;<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>{stats.source === 'CLOUD_URL' ? 'Cloud Sync' : 'Local Mode'}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/span&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span className="text-slate-300"&gt;|&lt;/span&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span className="font-bold text-slate-700"&gt;Database Version: {stats.lastUpdated}&lt;/span&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="relative flex-grow"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" /&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;input</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>type="text"</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>placeholder={isFileLoaded ? "Type to search (Instant Filter)..." : "Waiting for database..."}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none text-sm transition-all shadow-sm font-medium"</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>value={inputValue}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>onChange={(e) =&gt; setInputValue(e.target.value)}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>disabled={!isFileLoaded}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>autoFocus</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>/&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>{inputValue !== debouncedTerm &amp;&amp; (</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="absolute right-3 top-1/2 -translate-y-1/2"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;RefreshCw className="w-3 h-3 text-slate-400 animate-spin" /&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>)}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="flex items-center gap-3 shrink-0"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>{isFileLoaded &amp;&amp; (</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;button<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>onClick={handlePrint}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>className="flex items-center gap-2 px-4 py-2 bg-white text-slate-700 border border-slate-300 rounded font-bold hover:bg-slate-50 transition-all text-xs shadow-sm"</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>{isPrinting ? &lt;Loader className="w-4 h-4 animate-spin" /&gt; : &lt;Printer className="w-4 h-4" /&gt;} Print</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>)}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/header&gt;</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>{/* Main Content */}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;main className="flex-1 overflow-hidden bg-white p-0 relative print-visible"&gt;</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="hidden print:block p-4 border-b-2 border-black mb-4"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h1 className="text-2xl font-bold"&gt;EI Compendex Search Report&lt;/h1&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="flex justify-between mt-2 text-sm"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span&gt;Keywords: {inputValue || "(All Records)"}&lt;/span&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span&gt;Total {displayData.length.toLocaleString()} records (filtered from {stats.total.toLocaleString()} records)&lt;/span&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span&gt;Database Version: {stats.lastUpdated}&lt;/span&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>{isParsing &amp;&amp; (</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="flex flex-col items-center justify-center h-full text-slate-500 bg-white/95 z-20 absolute inset-0 no-print"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;RefreshCw className="w-12 h-12 mb-4 animate-spin text-blue-600" /&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p className="text-lg font-bold text-slate-700"&gt;{loadingStatus}&lt;/p&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p className="text-sm text-slate-400 mt-2"&gt;Running in background thread...&lt;/p&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>)}</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>{!isFileLoaded &amp;&amp; !isParsing &amp;&amp; (</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="flex flex-col items-center justify-center h-full text-slate-400 bg-slate-50 no-print px-4"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="bg-white p-6 rounded-full shadow-sm mb-4"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>{errorMsg ? &lt;AlertTriangle className="w-12 h-12 text-amber-500" /&gt; : &lt;Cloud className="w-12 h-12 text-slate-300" /&gt;}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;h2 className="text-xl font-bold text-slate-700 mb-2"&gt;{errorMsg ? "Auto-Load Failed" : "Waiting for Database..."}&lt;/h2&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p className="text-sm text-slate-500 max-w-md text-center leading-relaxed mb-6"&gt;{errorMsg ? errorMsg.text : "Please upload a file manually."}&lt;/p&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="relative overflow-hidden group"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" /&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;button className="flex items-center justify-center gap-2 w-full px-6 py-3 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors shadow-md font-bold"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;Upload className="w-4 h-4" /&gt; Manual Upload Local File</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>)}</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>{isFileLoaded &amp;&amp; (</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;VirtualTable<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>data={displayData}<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>totalCount={stats.total}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>isPrinting={isPrinting}<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>/&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>)}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/main&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const VirtualTable = ({ data, totalCount, isPrinting }) =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const parentRef = useRef();</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const [scrollTop, setScrollTop] = useState(0);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const [containerHeight, setContainerHeight] = useState(800);</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>// Increased rowHeight estimate to allow 3-4 lines of text comfortably in calculation</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const rowHeight = 80;<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>const totalHeight = data.length * rowHeight;</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>useEffect(() =&gt; {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>if (parentRef.current) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>setContainerHeight(parentRef.current.clientHeight);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const handleScroll = (e) =&gt; setScrollTop(e.target.scrollTop);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const parent = parentRef.current;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>parent.addEventListener('scroll', handleScroll);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>return () =&gt; parent.removeEventListener('scroll', handleScroll);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>}, []);</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>let visibleData = data;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>let startSpacerHeight = 0;</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>if (!isPrinting &amp;&amp; data.length &gt; 100) {</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const startIndex = Math.floor(scrollTop / rowHeight);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const visibleNodeCount = Math.ceil(containerHeight / rowHeight);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const start = Math.max(0, startIndex - 5);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>const end = Math.min(data.length, startIndex + visibleNodeCount + 5);</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>visibleData = data.slice(start, end);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>startSpacerHeight = start * rowHeight;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>return (</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="flex flex-col h-full print:h-auto"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="bg-slate-100 border-b border-slate-300 flex text-[11px] font-bold text-slate-700 uppercase tracking-wider shadow-sm shrink-0 print:border-black print:text-black"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="px-4 py-3 w-[28%] border-r border-slate-200"&gt;Source Title&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="px-3 py-3 w-[12%] border-r border-slate-200 text-center"&gt;ISSN&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="px-3 py-3 w-[12%] border-r border-slate-200 text-center"&gt;E-ISSN&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="px-4 py-3 w-[20%] border-r border-slate-200"&gt;Publisher&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="px-3 py-3 w-[14%] border-r border-slate-200"&gt;Country&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="px-3 py-3 w-[14%]"&gt;Language&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div ref={parentRef} className="flex-1 overflow-y-auto print:overflow-visible virtual-container"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div style={{ height: isPrinting ? 'auto' : totalHeight, position: 'relative' }}&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div className="virtual-spacer" style={{ height: isPrinting ? 0 : startSpacerHeight }} /&gt;</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>{visibleData.length &gt; 0 ? (</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>visibleData.map((item) =&gt; (</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>key={item.id}<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>// Removed 'items-center' -&gt; changed to 'items-start' via specific style classes below</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>// Removed fixed height in style to allow expansion</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>className="flex text-sm hover:bg-blue-50 transition-colors group border-b border-slate-100 print-row print:border-slate-300 print:text-xs items-start py-2"</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>style={{ height: isPrinting ? 'auto' : 'auto', minHeight: isPrinting ? 0 : rowHeight }}<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>{/* Full Text Fix:</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>1. whitespace-normal: allow wrapping everywhere</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>2. break-words: break long strings</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>3. items-start (parent): align content to top</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>*/}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="px-4 w-[28%] text-slate-700 leading-snug whitespace-normal break-words border-r border-transparent group-hover:border-slate-200 print:border-r print:border-slate-300" title={item.title}&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>{item.title}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="px-3 w-[12%] font-mono text-slate-500 text-[13px] text-center leading-snug border-r border-transparent group-hover:border-slate-200 print:text-black print:border-r print:border-slate-300"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>{item.issn}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="px-3 w-[12%] font-mono text-slate-500 text-[13px] text-center leading-snug border-r border-transparent group-hover:border-slate-200 print:text-black print:border-r print:border-slate-300"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>{item.eissn}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="px-4 w-[20%] text-slate-600 text-[13px] leading-snug whitespace-normal break-words border-r border-transparent group-hover:border-slate-200 print:text-black print:border-r print:border-slate-300"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>{item.publisher}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="px-3 w-[14%] text-slate-600 text-[13px] leading-snug whitespace-normal border-r border-transparent group-hover:border-slate-200 print:text-black print:border-r print:border-slate-300"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>{item.country}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="px-3 w-[14%] text-[12px] text-slate-500 leading-snug print:text-black"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>{item.language}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>))</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>) : (</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="py-20 text-center absolute w-full top-0"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p className="text-slate-500 text-sm font-medium"&gt;No results found.&lt;/p&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>)}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p6"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>{/* 1. </span><span class="s10">列印時移除表格最末端的統計資料</span><span class="s1"> (Added print:hidden) */}</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="bg-slate-50 text-slate-400 text-[10px] py-2 px-6 border-t border-slate-200 text-center shrink-0 print:hidden"&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                    </span>Total {data.length.toLocaleString()} records (filtered from {totalCount.toLocaleString()} records)</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">            </span>);</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p5"><span class="s1"><br>
+</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// ==========================================================</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// 3. RENDER</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>// ==========================================================</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>const root = ReactDOM.createRoot(document.getElementById('root'));</span></p>
+<p class="p5"><span class="s1"><span class="Apple-converted-space">        </span>root.render(&lt;App /&gt;);</span></p>
+<p class="p2"><span class="s4"><span class="Apple-converted-space">    </span></span><span class="s3">&lt;/</span><span class="s1">script</span><span class="s3">&gt;</span></p>
+<p class="p2"><span class="s3">&lt;/</span><span class="s1">body</span><span class="s3">&gt;</span></p>
+<p class="p2"><span class="s3">&lt;/</span><span class="s1">html</span><span class="s3">&gt;</span></p>
+</body>
+</html>
