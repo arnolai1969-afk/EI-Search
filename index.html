@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EI Compendex 2025 Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EI Compendex Journal Search System</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,6 +19,8 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
+            /* Prevent pull-to-refresh on mobile which causes reloads */
+            overscroll-behavior-y: contain; 
         }
         /* Hide scrollbar for Chrome, Safari and Opera */
         .no-scrollbar::-webkit-scrollbar {
@@ -38,74 +40,36 @@
         // 1. Setup Environment
         const { useState, useMemo, useEffect, useRef, useCallback } = React;
         
-        // 2. Inline Icon Components (Replacing external dependency to fix ReferenceError)
+        // ==========================================================================================
+        // [CONFIGURATION]
+        // The program looks for files starting with this string in the directory
+        const FILE_PREFIX_TARGET = "CPXSourceList_"; 
+        
+        // [CRITICAL FIX] REMOVED Dropbox URL entirely to prevent accidental fallback
+        const DATABASE_URL = ""; 
+        // ==========================================================================================
+
+        // 2. Inline Icon Components
         const IconBase = ({ children, className, ...props }) => (
-            <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="24" 
-                height="24" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                className={className} 
-                {...props}
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
                 {children}
             </svg>
         );
 
-        const Database = (props) => (
-            <IconBase {...props}><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></IconBase>
-        );
-        const Search = (props) => (
-            <IconBase {...props}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></IconBase>
-        );
-        const CheckCircle = (props) => (
-            <IconBase {...props}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></IconBase>
-        );
-        const RefreshCw = (props) => (
-            <IconBase {...props}><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></IconBase>
-        );
-        const Printer = (props) => (
-            <IconBase {...props}><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></IconBase>
-        );
-        const Loader = (props) => (
-            <IconBase {...props}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></IconBase>
-        );
-        const AlertTriangle = (props) => (
-            <IconBase {...props}><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></IconBase>
-        );
-        const Cloud = (props) => (
-            <IconBase {...props}><path d="M17.5 19c0-1.7-1.3-3-3-3h-1.1c-.1-2.9-2.4-5.2-5.3-5.2-1.8 0-3.4.9-4.3 2.3-.3-.1-.7-.1-1-.1C4.7 13 3 14.7 3 16.5S4.7 20 6.8 20h10.7c1.7 0 3-1.3 3-3z"/></IconBase>
-        );
-        const Upload = (props) => (
-            <IconBase {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></IconBase>
-        );
+        const Database = (props) => <IconBase {...props}><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></IconBase>;
+        const Search = (props) => <IconBase {...props}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></IconBase>;
+        const CheckCircle = (props) => <IconBase {...props}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></IconBase>;
+        const RefreshCw = (props) => <IconBase {...props}><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></IconBase>;
+        const Printer = (props) => <IconBase {...props}><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></IconBase>;
+        const Loader = (props) => <IconBase {...props}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></IconBase>;
+        const AlertTriangle = (props) => <IconBase {...props}><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></IconBase>;
+        const Cloud = (props) => <IconBase {...props}><path d="M17.5 19c0-1.7-1.3-3-3-3h-1.1c-.1-2.9-2.4-5.2-5.3-5.2-1.8 0-3.4.9-4.3 2.3-.3-.1-.7-.1-1-.1C4.7 13 3 14.7 3 16.5S4.7 20 6.8 20h10.7c1.7 0 3-1.3 3-3z"/></IconBase>;
+        const Upload = (props) => <IconBase {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></IconBase>;
+        const Server = (props) => <IconBase {...props}><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></IconBase>;
 
+        const DEMO_DATABASE = [];
 
-        /**
-         * EI Compendex 2025 Full Search Dashboard (v15.0 Full-Text Layout Edition)
-         * Fixes:
-         * 1. Layout: Switched to 'items-start' and removed 'truncate' to show full text on screen (like v12).
-         * 2. Print: Enhanced CSS to prevent overlap, ensure page breaks don't cut rows, and maintain readable spacing.
-         * 3. Performance: Adjusted Virtual Scrolling to accommodate variable/larger row heights.
-         */
-
-        // ==========================================================================================
-        // [CLOUD LINK CONFIGURATION]
-        const DATABASE_URL = "https://www.dropbox.com/scl/fi/m366wi6658lm1kg0l59dq/CPXSourceList_102025.xlsx?rlkey=k48iig1j6lcctmtdnkrgfke3l&st=zavye5rl&dl=0"; 
-        // ==========================================================================================
-
-        const DEMO_DATABASE = [
-            { id: 'd1', title: 'Nature', issn: '0028-0836', eissn: '1476-4687', publisher: 'Nature Publishing Group', country: 'United Kingdom', language: 'English' },
-            { id: 'd2', title: 'IEEE Transactions on Pattern Analysis and Machine Intelligence', issn: '0162-8828', eissn: '1939-3539', publisher: 'IEEE', country: 'USA', language: 'English' },
-            { id: 'd3', title: 'Acta Automatica Sinica', issn: '0254-4156', eissn: '-', publisher: 'Science Press', country: 'China', language: 'Chinese' },
-        ];
-
-        // --- Web Worker Code ---
+        // --- Web Worker Code (Excel Parser) ---
         const workerCode = `
         importScripts('https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js');
 
@@ -133,13 +97,14 @@
                 let headerIdx = -1;
                 let colMap = {};
                 
+                // Dynamic Header Detection
                 for (let i = 0; i < Math.min(rawData.length, 100); i++) {
                 const row = (rawData[i] || []).map(c => sanitize(c).toLowerCase());
-                if (row.some(cell => cell.includes('source title') || cell === 'issn' || cell.includes('print issn') || cell.includes('isbn'))) {
+                if (row.some(cell => cell.includes('source title') || cell.includes('journal name') || cell === 'issn' || cell.includes('print issn') || cell.includes('isbn'))) {
                     headerIdx = i;
                     rawData[headerIdx].forEach((cell, cellIdx) => {
                     const c = sanitize(cell).toLowerCase();
-                    if (c.includes('source title') || c.includes('meeting title')) colMap.title = cellIdx;
+                    if (c.includes('source title') || c.includes('meeting title') || c.includes('journal name')) colMap.title = cellIdx;
                     if (c === 'issn' || c.includes('print issn')) colMap.issn = cellIdx;
                     if (c.includes('online issn') || c === 'eissn') colMap.eissn = cellIdx;
                     if (c.includes('publisher')) colMap.publisher = cellIdx;
@@ -155,7 +120,7 @@
 
                 if (headerIdx !== -1) {
                 const rows = rawData.slice(headerIdx + 1);
-                const getVal = (row, key) => sanitize(row[colMap[key]] || '');
+                const getVal = (row, key) => colMap[key] !== undefined ? sanitize(row[colMap[key]] || '') : '';
 
                 const formattedRows = rows.map(r => {
                     let title = getVal(r, 'title');
@@ -174,7 +139,7 @@
                     if (country === '-') country = 'China';
                     }
                     
-                if (colMap.isbn !== undefined) {
+                    if (colMap.isbn !== undefined) {
                     const isbn = getVal(r, 'isbn');
                     if (isbn && issn === '-') issn = \`ISBN: \${isbn}\`;
                     }
@@ -206,11 +171,9 @@
         const [isParsing, setIsParsing] = useState(false);
         const [loadingStatus, setLoadingStatus] = useState('');
         const [errorMsg, setErrorMsg] = useState(null);
-        const [showSettings, setShowSettings] = useState(false);
-        const [cloudUrl, setCloudUrl] = useState(DATABASE_URL);
         
         const [stats, setStats] = useState({ 
-            total: DEMO_DATABASE.length, 
+            total: 0, 
             lastUpdated: '-',
             source: 'INIT',
             filename: '' 
@@ -218,104 +181,165 @@
         
         const [isFileLoaded, setIsFileLoaded] = useState(false);
         const [isPrinting, setIsPrinting] = useState(false);
+        const [isLocalMode, setIsLocalMode] = useState(false);
 
         const workerRef = useRef(null);
+        
+        // [FIX]: Guard to prevent double fetching on mobile reloads
+        const hasFetched = useRef(false);
 
-        const parseDatabaseVersion = useCallback((str) => {
-            try {
-            if (!str) return new Date().toLocaleDateString();
-            const match = str.match(/_(\d{2})(\d{4})/);
+        // Helper to format database version date (MMYYYY -> MM/YYYY)
+        const formatDatabaseVersion = (filename) => {
+            if (!filename) return "N/A";
+            const match = filename.match(/(\d{6})/);
             if (match) {
-                const date = new Date(match[2], parseInt(match[1], 10) - 1);
-                return `${date.toLocaleString('en-US', { month: 'long' })} ${match[2]}`;
+                const dateStr = match[1];
+                const month = dateStr.substring(0, 2);
+                const year = dateStr.substring(2, 6);
+                return `${month}/${year}`;
             }
-            return new Date().toLocaleDateString();
-            } catch { return "Unknown"; }
-        }, []);
+            return filename;
+        };
 
+        // Initialize Worker
         useEffect(() => {
             const blob = new Blob([workerCode], { type: 'application/javascript' });
             workerRef.current = new Worker(URL.createObjectURL(blob));
 
             workerRef.current.onmessage = (e) => {
-            const { success, rows, error } = e.data;
-            if (success) {
-                setUnifiedData(rows);
-                setDisplayData(rows);
-                setStats(prev => ({
-                ...prev,
-                total: rows.length,
-                lastUpdated: parseDatabaseVersion(prev.filename || "Uploaded File")
-                }));
-                setIsFileLoaded(true);
-            } else {
-                setErrorMsg({ text: String(error), code: "WORKER_ERR" });
-            }
-            setIsParsing(false);
-            setLoadingStatus('');
+                const { success, rows, error } = e.data;
+                if (success) {
+                    setUnifiedData(rows);
+                    setDisplayData(rows);
+                    setStats(prev => ({
+                        ...prev,
+                        total: rows.length,
+                        lastUpdated: new Date().toLocaleDateString()
+                    }));
+                    setIsFileLoaded(true);
+                } else {
+                    setErrorMsg({ text: `Parsing Failed: ${String(error)}`, code: "WORKER_ERR" });
+                }
+                setIsParsing(false);
+                setLoadingStatus('');
             };
 
             return () => workerRef.current.terminate();
-        }, [parseDatabaseVersion]);
+        }, []);
 
+        // Detect Environment & Trigger Fetch
         useEffect(() => {
-            if (cloudUrl && !isFileLoaded) {
-            handleCloudFetch();
+            // [FIX]: Prevent running this logic multiple times on mobile resize/reload
+            if (hasFetched.current) return;
+
+            if (window.location.protocol === 'file:') {
+                hasFetched.current = true;
+                setIsLocalMode(true);
+                setStats(prev => ({ ...prev, source: 'LOCAL' }));
+                console.log("Local mode detected, waiting for manual upload...");
+            } else {
+                // Web mode (GitHub Pages)
+                hasFetched.current = true;
+                setIsLocalMode(false);
+                setStats(prev => ({ ...prev, source: 'WEB' }));
+                handleGitHubAutoFetch();
             }
         }, []);
 
+        // Search Filter
         useEffect(() => {
             const timer = setTimeout(() => {
-            setDebouncedTerm(inputValue);
-            if (!inputValue.trim()) {
-                setDisplayData(unifiedData);
-            } else {
-                const query = inputValue.toLowerCase().trim();
-                // 1. 查詢時僅限於 由 source title 欄位查詢 不需要查詢其他欄位是否符合
-                const filtered = unifiedData.filter(item => 
-                (item.title && item.title.toLowerCase().includes(query))
-                );
-                setDisplayData(filtered);
-            }
+                setDebouncedTerm(inputValue);
+                if (!inputValue.trim()) {
+                    setDisplayData(unifiedData);
+                } else {
+                    const query = inputValue.toLowerCase().trim();
+                    const filtered = unifiedData.filter(item => 
+                        (item.title && item.title.toLowerCase().includes(query))
+                    );
+                    setDisplayData(filtered);
+                }
             }, 300);
 
             return () => clearTimeout(timer);
         }, [inputValue, unifiedData]);
 
-        const handleCloudFetch = async () => {
+        // [Core] GitHub API Auto Scan & Fetch
+        const handleGitHubAutoFetch = async () => {
             setIsParsing(true);
-            setLoadingStatus('Connecting to Cloud...');
+            setLoadingStatus('Scanning GitHub directory...');
             setErrorMsg(null);
-            setShowSettings(false);
-            
-            let targetUrl = cloudUrl;
-            if (targetUrl.includes('dropbox.com')) {
-                targetUrl = targetUrl.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('dl=0', 'dl=1');
-            }
 
             try {
-            const response = await fetch(targetUrl);
-            if (!response.ok) throw new Error(`Server Error: ${response.status}`);
-            
-            const contentType = response.headers.get("content-type");
-            if (contentType && contentType.includes("text/html")) throw new Error("URL returned a webpage.");
+                const hostname = window.location.hostname;
+                const pathParts = window.location.pathname.split('/').filter(p => p);
+                
+                if (!hostname.includes('github.io')) {
+                    throw new Error("Not a GitHub Pages environment, cannot use API auto-scan. Please use manual upload.");
+                }
 
-            setLoadingStatus('Fetching Database File ...');
-            const buffer = await response.arrayBuffer();
-            
-            setStats(prev => ({ ...prev, filename: targetUrl, source: 'CLOUD_URL' }));
-            workerRef.current.postMessage({ type: 'PARSE', data: new Uint8Array(buffer) });
+                const username = hostname.split('.')[0];
+                const repoName = pathParts[0];
+
+                if (!username || !repoName) {
+                    throw new Error("Cannot parse repository info, please use manual upload.");
+                }
+
+                const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents/`;
+                console.log(`Scanning API: ${apiUrl}`);
+
+                const apiResponse = await fetch(apiUrl);
+                if (!apiResponse.ok) {
+                    if (apiResponse.status === 403) throw new Error("API Rate Limit Exceeded or Private Repo. Please use manual upload.");
+                    if (apiResponse.status === 404) throw new Error("Repository path not found.");
+                    throw new Error(`GitHub API Error: ${apiResponse.status}`);
+                }
+
+                const files = await apiResponse.json();
+
+                const targetFiles = files.filter(f => 
+                    f.type === 'file' && 
+                    f.name.startsWith(FILE_PREFIX_TARGET) &&
+                    (f.name.endsWith('.xlsx') || f.name.endsWith('.xls'))
+                );
+
+                if (targetFiles.length === 0) {
+                    throw new Error(`No Excel files found starting with "${FILE_PREFIX_TARGET}".`);
+                }
+
+                // Sort: Parsing MMYYYY and sorting by YYYYMM (Descending)
+                targetFiles.sort((a, b) => {
+                    const getDateNum = (name) => {
+                        const match = name.match(/(\d{6})/);
+                        if (!match) return 0;
+                        const ds = match[1]; 
+                        // MMYYYY -> YYYYMM for correct sorting
+                        return parseInt(ds.substring(2, 6) + ds.substring(0, 2)); 
+                    };
+                    return getDateNum(b.name) - getDateNum(a.name);
+                });
+
+                const newestFile = targetFiles[0];
+                console.log("Found newest file:", newestFile.name);
+                setStats(prev => ({ ...prev, filename: newestFile.name }));
+
+                setLoadingStatus(`Downloading database: ${newestFile.name}...`);
+                
+                // [FIX]: Add cache-busting timestamp to force fresh download on mobile
+                const timestamp = new Date().getTime();
+                const fileResponse = await fetch(`./${newestFile.name}?t=${timestamp}`);
+                
+                if (!fileResponse.ok) throw new Error("File download failed");
+
+                const buffer = await fileResponse.arrayBuffer();
+                
+                setLoadingStatus('Parsing Excel data...');
+                workerRef.current.postMessage({ type: 'PARSE', data: new Uint8Array(buffer) });
 
             } catch (error) {
-            console.warn("Fetch error:", error);
-            let userText = error.message;
-            let code = "UNKNOWN";
-            if (error.message.includes("Failed to fetch")) {
-                userText = "Connection Blocked (CORS).";
-                code = "CORS_BLOCK";
-            }
-            setErrorMsg({ text: userText, code: code });
-            setIsParsing(false);
+                console.warn("Auto fetch error:", error);
+                setErrorMsg({ text: error.message, code: "FETCH_ERR" });
+                setIsParsing(false);
             }
         };
 
@@ -324,14 +348,14 @@
             if (!file) return;
 
             setIsParsing(true);
-            setLoadingStatus('Reading File...');
+            setLoadingStatus('Reading file...');
             setErrorMsg(null);
             
             const reader = new FileReader();
             reader.onload = (event) => {
-            setLoadingStatus('Processing Data in Background...');
-            setStats(prev => ({ ...prev, filename: file.name, source: 'MANUAL_UPLOAD' }));
-            workerRef.current.postMessage({ type: 'PARSE', data: new Uint8Array(event.target.result) });
+                setLoadingStatus('Processing data...');
+                setStats(prev => ({ ...prev, filename: file.name, source: 'MANUAL' }));
+                workerRef.current.postMessage({ type: 'PARSE', data: new Uint8Array(event.target.result) });
             };
             reader.readAsArrayBuffer(file);
         };
@@ -339,10 +363,13 @@
         const handlePrint = () => {
             setIsPrinting(true);
             setTimeout(() => {
-            window.print();
-            setIsPrinting(false);
+                window.print();
+                setIsPrinting(false);
             }, 500);
         };
+
+        const containerStyle = { height: isPrinting ? 'auto' : '800px', position: 'relative' }; 
+        const rowStyle = { height: isPrinting ? 'auto' : 'auto', minHeight: isPrinting ? 0 : 80 };
 
         return (
             <div className="flex flex-col h-screen bg-[#f8f9fa] text-gray-800 font-sans select-none overflow-hidden print:h-auto print:overflow-visible print:bg-white">
@@ -352,23 +379,19 @@
                 body { -webkit-print-color-adjust: exact; background-color: white !important; }
                 .no-print { display: none !important; }
                 .print-visible { overflow: visible !important; height: auto !important; display: block !important; }
-                /* Reset container for full print */
                 .virtual-container { position: static !important; height: auto !important; overflow: visible !important; }
-                .virtual-spacer { display: none !important; }
-                
-                /* CRITICAL PRINT FIXES */
                 .print-row {
-                    page-break-inside: avoid; /* Don't cut rows in half */
+                    page-break-inside: avoid;
                     padding-top: 15px !important;
                     padding-bottom: 15px !important;
                     display: flex !important;
-                    align-items: flex-start !important; /* Top align content so Title and ISSN start at same level */
+                    align-items: flex-start !important;
                 }
                 .print-row div { 
-                    white-space: normal !important; /* Force wrap */
+                    white-space: normal !important;
                     overflow: visible !important; 
                     text-overflow: clip !important;
-                    line-height: 1.5 !important; /* Better spacing between lines */
+                    line-height: 1.5 !important;
                     height: auto !important;
                 }
                 }
@@ -377,18 +400,21 @@
             {/* Header */}
             <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm shrink-0 gap-4 no-print">
                 <div className="flex items-center gap-3 shrink-0">
-                <div className="bg-slate-800 p-2 rounded-lg">
+                <div className={`p-2 rounded-lg ${isLocalMode ? 'bg-orange-500' : 'bg-slate-800'}`}>
                     <Database className="text-white w-5 h-5" />
                 </div>
                 <div>
-                    <h1 className="text-lg font-bold text-slate-900 tracking-tight">EI Compendex Search</h1>
+                    <h1 className="text-lg font-bold text-slate-900 tracking-tight">EI Compendex Journal Search</h1>
                     <div className="flex items-center gap-2 text-[10px] text-slate-500">
-                    <span className="flex items-center gap-1">
-                        <CheckCircle className="w-3 h-3 text-emerald-600" /> 
-                        {stats.source === 'CLOUD_URL' ? 'Cloud Sync' : 'Local Mode'}
+                    <span className="flex items-center gap-1 font-bold">
+                        {isLocalMode ? (
+                            <span className="text-orange-600 flex items-center gap-1"><Server className="w-3 h-3"/> Local Mode</span>
+                        ) : (
+                            <span className="text-emerald-600 flex items-center gap-1"><Cloud className="w-3 h-3"/> Cloud Mode (GitHub)</span>
+                        )}
                     </span>
                     <span className="text-slate-300">|</span>
-                    <span className="font-bold text-slate-700">Database Version: {stats.lastUpdated}</span>
+                    <span className="font-bold text-slate-700">Database version: {formatDatabaseVersion(stats.filename)}</span>
                     </div>
                 </div>
                 </div>
@@ -397,7 +423,7 @@
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
                     type="text"
-                    placeholder={isFileLoaded ? "Type to search (Instant Filter)..." : "Waiting for database..."}
+                    placeholder={isFileLoaded ? "Type to filter (Journal Name, ISSN, Publisher)..." : "Waiting for database..."}
                     className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-slate-800 focus:border-slate-800 outline-none text-sm transition-all shadow-sm font-medium"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
@@ -412,30 +438,26 @@
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">
-                <>
-                    {isFileLoaded && (
+                {isFileLoaded && (
                     <button 
                         onClick={handlePrint}
                         className="flex items-center gap-2 px-4 py-2 bg-white text-slate-700 border border-slate-300 rounded font-bold hover:bg-slate-50 transition-all text-xs shadow-sm"
                     >
                         {isPrinting ? <Loader className="w-4 h-4 animate-spin" /> : <Printer className="w-4 h-4" />} Print
                     </button>
-                    )}
-                </>
+                )}
                 </div>
             </header>
 
             {/* Main Content */}
             <main className="flex-1 overflow-hidden bg-white p-0 relative print-visible">
-                
-                {/* REMOVED: Settings Modal */}
 
                 <div className="hidden print:block p-4 border-b-2 border-black mb-4">
-                <h1 className="text-2xl font-bold">EI Compendex Search Report</h1>
+                <h1 className="text-2xl font-bold">Search Report</h1>
                 <div className="flex justify-between mt-2 text-sm">
-                    <span>Keywords: {inputValue || "(All Records)"}</span>
-                    <span>Total {displayData.length.toLocaleString()} records (filtered from {stats.total.toLocaleString()} records)</span>
-                    <span>Database Version: {stats.lastUpdated}</span>
+                    <span>Keywords: {inputValue || "(Show All)"}</span>
+                    <span>Total {displayData.length.toLocaleString()} records (Database Total: {stats.total.toLocaleString()} records)</span>
+                    <span>Database version: {formatDatabaseVersion(stats.filename)}</span>
                 </div>
                 </div>
 
@@ -443,22 +465,38 @@
                 <div className="flex flex-col items-center justify-center h-full text-slate-500 bg-white/95 z-20 absolute inset-0 no-print">
                     <RefreshCw className="w-12 h-12 mb-4 animate-spin text-blue-600" />
                     <p className="text-lg font-bold text-slate-700">{loadingStatus}</p>
-                    <p className="text-sm text-slate-400 mt-2">Running in background thread...</p>
                 </div>
                 )}
 
                 {!isFileLoaded && !isParsing && (
                 <div className="flex flex-col items-center justify-center h-full text-slate-400 bg-slate-50 no-print px-4">
-                    <div className="bg-white p-6 rounded-full shadow-sm mb-4">
-                    {errorMsg ? <AlertTriangle className="w-12 h-12 text-amber-500" /> : <Cloud className="w-12 h-12 text-slate-300" />}
+                    <div className="bg-white p-8 rounded-xl shadow-sm mb-6 max-w-lg text-center border border-slate-200">
+                    {errorMsg ? (
+                         <div className="text-amber-500 mb-4 flex justify-center"><AlertTriangle className="w-12 h-12" /></div>
+                    ) : (
+                         <div className="text-slate-300 mb-4 flex justify-center"><Upload className="w-12 h-12" /></div>
+                    )}
+                    
+                    <h2 className="text-xl font-bold text-slate-800 mb-2">
+                        {errorMsg ? "Auto-load incomplete" : (isLocalMode ? "Please upload database file" : "Initializing...")}
+                    </h2>
+                    
+                    <p className="text-sm text-slate-500 mb-6 leading-relaxed">
+                        {errorMsg ? (
+                            <span>{errorMsg.text}<br/><span className="text-xs mt-1 block">Please try manual upload.</span></span>
+                        ) : (
+                            isLocalMode 
+                            ? "Local mode detected (file://). Browser security prevents auto-loading. Please select the .xlsx file manually."
+                            : "If not responding, please check if the correctly named file exists in the GitHub directory."
+                        )}
+                    </p>
+
+                    <div className="relative overflow-hidden group inline-block w-full">
+                        <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                        <button className="flex items-center justify-center gap-2 w-full px-6 py-3 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors shadow-md font-bold">
+                        <Upload className="w-4 h-4" /> Click to upload Excel file manually
+                        </button>
                     </div>
-                    <h2 className="text-xl font-bold text-slate-700 mb-2">{errorMsg ? "Auto-Load Failed" : "Waiting for Database..."}</h2>
-                    <p className="text-sm text-slate-500 max-w-md text-center leading-relaxed mb-6">{errorMsg ? errorMsg.text : "Please upload a file manually."}</p>
-                    <div className="relative overflow-hidden group">
-                    <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                    <button className="flex items-center justify-center gap-2 w-full px-6 py-3 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors shadow-md font-bold">
-                        <Upload className="w-4 h-4" /> Manual Upload Local File
-                    </button>
                     </div>
                 </div>
                 )}
@@ -468,6 +506,8 @@
                     data={displayData} 
                     totalCount={stats.total}
                     isPrinting={isPrinting} 
+                    rowStyle={rowStyle}
+                    containerStyle={containerStyle}
                 />
                 )}
             </main>
@@ -475,12 +515,10 @@
         );
         };
 
-        const VirtualTable = ({ data, totalCount, isPrinting }) => {
+        const VirtualTable = ({ data, totalCount, isPrinting, rowStyle, containerStyle }) => {
         const parentRef = useRef();
         const [scrollTop, setScrollTop] = useState(0);
         const [containerHeight, setContainerHeight] = useState(800);
-
-        // Increased rowHeight estimate to allow 3-4 lines of text comfortably in calculation
         const rowHeight = 80; 
         const totalHeight = data.length * rowHeight;
 
@@ -502,18 +540,11 @@
             const visibleNodeCount = Math.ceil(containerHeight / rowHeight);
             const start = Math.max(0, startIndex - 5);
             const end = Math.min(data.length, startIndex + visibleNodeCount + 5);
-            
             visibleData = data.slice(start, end);
             startSpacerHeight = start * rowHeight;
         }
 
-        // Fix for GitHub Pages Jekyll build error:
-        // Jekyll interprets double curly braces {{ }} as Liquid tags and may choke/timeout on React inline styles.
-        // Solution: Define styles as objects first to avoid the {{ sequence.
-        
-        const containerStyle = { height: isPrinting ? 'auto' : totalHeight, position: 'relative' };
         const spacerStyle = { height: isPrinting ? 0 : startSpacerHeight };
-        const rowStyle = { height: isPrinting ? 'auto' : 'auto', minHeight: isPrinting ? 0 : rowHeight };
 
         return (
             <div className="flex flex-col h-full print:h-auto">
@@ -527,7 +558,6 @@
             </div>
 
             <div ref={parentRef} className="flex-1 overflow-y-auto print:overflow-visible virtual-container">
-                {/* Applied style object to avoid double curly braces */}
                 <div style={containerStyle}>
                 <div className="virtual-spacer" style={spacerStyle} />
                 
@@ -535,16 +565,9 @@
                     visibleData.map((item) => (
                     <div 
                         key={item.id} 
-                        // Removed 'items-center' -> changed to 'items-start' via specific style classes below
-                        // Removed fixed height in style to allow expansion
                         className="flex text-sm hover:bg-blue-50 transition-colors group border-b border-slate-100 print-row print:border-slate-300 print:text-xs items-start py-2"
                         style={rowStyle} 
                     >
-                        {/* Full Text Fix:
-                        1. whitespace-normal: allow wrapping everywhere
-                        2. break-words: break long strings
-                        3. items-start (parent): align content to top
-                        */}
                         <div className="px-4 w-[28%] text-slate-700 leading-snug whitespace-normal break-words border-r border-transparent group-hover:border-slate-200 print:border-r print:border-slate-300" title={item.title}>
                         {item.title}
                         </div>
@@ -567,15 +590,14 @@
                     ))
                 ) : (
                     <div className="py-20 text-center absolute w-full top-0">
-                    <p className="text-slate-500 text-sm font-medium">No results found.</p>
+                    <p className="text-slate-500 text-sm font-medium">No matching records found.</p>
                     </div>
                 )}
                 </div>
             </div>
             
-            {/* 1. 列印時移除表格最末端的統計資料 (Added print:hidden) */}
             <div className="bg-slate-50 text-slate-400 text-[10px] py-2 px-6 border-t border-slate-200 text-center shrink-0 print:hidden">
-                Total {data.length.toLocaleString()} records (filtered from {totalCount.toLocaleString()} records)
+                Showing {data.length.toLocaleString()} / Total {totalCount.toLocaleString()}
             </div>
             </div>
         );
