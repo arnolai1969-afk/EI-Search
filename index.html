@@ -169,7 +169,6 @@
         `;
 
         const App = () => {
-            // "unifiedData" is REMOVED to save memory. Main thread only holds "displayData".
             const [displayData, setDisplayData] = useState([]);
             const [inputValue, setInputValue] = useState('');
             const [debouncedTerm, setDebouncedTerm] = useState('');
@@ -207,13 +206,10 @@
                     const { type, total, rows, error, totalMatches, isTruncated: truncated } = e.data;
 
                     if (type === 'INIT_COMPLETE') {
-                        // Data loaded in Worker. Main thread doesn't hold data.
                         setStats(prev => ({ ...prev, total: total, lastUpdated: new Date().toLocaleDateString() }));
                         setIsFileLoaded(true);
                         setIsParsing(false);
                         setLoadingStatus('');
-                        
-                        // Trigger initial empty search to fill table (capped)
                         workerRef.current.postMessage({ type: 'SEARCH', query: '' });
                     }
                     else if (type === 'SEARCH_RESULTS') {
@@ -244,7 +240,6 @@
                 }
             }, []);
 
-            // Debounce Input and trigger SEARCH on Worker
             useEffect(() => {
                 const timer = setTimeout(() => {
                     if (isFileLoaded) {
@@ -288,13 +283,12 @@
                     setStats(prev => ({ ...prev, filename: newestFile.name }));
                     setLoadingStatus(`Downloading: ${newestFile.name}...`);
                     
-                    const timestamp = new Date().getTime(); // Cache busting
+                    const timestamp = new Date().getTime(); 
                     const fileResponse = await fetch(`./${newestFile.name}?t=${timestamp}`);
                     if (!fileResponse.ok) throw new Error("Download failed.");
                     const buffer = await fileResponse.arrayBuffer();
                     
                     setLoadingStatus('Parsing data (Worker)...');
-                    // Send buffer to worker. Worker KEEPS it.
                     workerRef.current.postMessage({ type: 'PARSE', data: new Uint8Array(buffer) });
 
                 } catch (error) {
@@ -390,7 +384,8 @@
 
                     <main className="flex-1 overflow-hidden bg-white p-0 relative print-visible flex flex-col">
                         <div className="hidden print:block p-4 border-b-2 border-black mb-4">
-                            <h1 className="text-2xl font-bold">Search Report</h1>
+                            {/* UPDATED PRINT TITLE */}
+                            <h1 className="text-2xl font-bold">EI Compendex Search Report</h1>
                             <div className="flex justify-between mt-2 text-sm">
                                 <span>Keywords: {inputValue || "(Show All)"}</span>
                                 <span>Total Matches: {displayData.length} (Database: {stats.total.toLocaleString()})</span>
@@ -496,20 +491,22 @@
                     <div ref={parentRef} className={`flex-1 overflow-auto custom-scrollbar print:overflow-visible ${isPrinting ? '' : 'w-full'}`}>
                         <div className={`${isPrinting ? '' : minTableWidth} ${isPrinting ? 'h-auto' : ''}`} style={{ height: isPrinting ? 'auto' : totalHeight + 40 }}>
                             
+                            {/* UPDATED HEADER: Centered Title and Publisher */}
                             <div className={`sticky top-0 z-10 bg-slate-100 border-b border-slate-300 flex text-[11px] font-bold text-slate-700 uppercase tracking-wider shadow-sm print:hidden ${minTableWidth}`}>
-                                <div className={`px-4 py-3 border-r border-slate-200 ${colWidths.title} w-[30%]`}>Source Title</div>
+                                <div className={`px-4 py-3 border-r border-slate-200 text-center ${colWidths.title} w-[30%]`}>Source Title</div>
                                 <div className={`px-3 py-3 border-r border-slate-200 text-center ${colWidths.issn}`}>ISSN</div>
                                 <div className={`px-3 py-3 border-r border-slate-200 text-center ${colWidths.eissn}`}>E-ISSN</div>
-                                <div className={`px-4 py-3 border-r border-slate-200 ${colWidths.pub} w-[20%]`}>Publisher</div>
+                                <div className={`px-4 py-3 border-r border-slate-200 text-center ${colWidths.pub} w-[20%]`}>Publisher</div>
                                 <div className={`px-3 py-3 border-r border-slate-200 ${colWidths.country}`}>Country</div>
                                 <div className={`px-3 py-3 ${colWidths.lang}`}>Language</div>
                             </div>
                             
+                            {/* UPDATED PRINT HEADER: Centered Title and Publisher */}
                             <div className="hidden print:flex text-[10px] font-bold border-b border-black mb-2">
-                                <div className="col-title">Source Title</div>
+                                <div className="col-title text-center">Source Title</div>
                                 <div className="col-issn text-center">ISSN</div>
                                 <div className="col-eissn text-center">E-ISSN</div>
-                                <div className="col-pub">Publisher</div>
+                                <div className="col-pub text-center">Publisher</div>
                                 <div className="col-country">Country</div>
                                 <div className="col-lang">Language</div>
                             </div>
@@ -523,7 +520,8 @@
                                         className={`flex text-sm hover:bg-blue-50 transition-colors group border-b border-slate-100 items-start py-2 ${isPrinting ? 'print-row' : minTableWidth}`}
                                         style={{ height: isPrinting ? 'auto' : 'auto', minHeight: isPrinting ? 0 : rowHeight }} 
                                     >
-                                        <div className={`px-4 leading-snug whitespace-normal break-words border-r border-transparent group-hover:border-slate-200 text-slate-700 font-medium ${colWidths.title} w-[30%] print:col-title`} title={item.title}>
+                                        {/* UPDATED ROW: Same font size for Source Title (removed font-medium, added text-[13px]) */}
+                                        <div className={`px-4 leading-snug whitespace-normal break-words border-r border-transparent group-hover:border-slate-200 text-slate-700 text-[13px] ${colWidths.title} w-[30%] print:col-title`} title={item.title}>
                                             {item.title}
                                         </div>
                                         <div className={`px-3 font-mono text-slate-500 text-[13px] text-center leading-snug border-r border-transparent group-hover:border-slate-200 ${colWidths.issn} print:col-issn`}>
