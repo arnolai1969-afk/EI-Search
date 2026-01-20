@@ -8,22 +8,20 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- React & ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- React & ReactDOM (cdnjs) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
     
     <!-- Babel for JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
 
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
-            /* Prevent pull-to-refresh on mobile which causes reloads */
             overscroll-behavior-y: contain; 
         }
         
-        /* Custom Scrollbar Styling for better UX */
         .custom-scrollbar::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -49,7 +47,6 @@
         // ==========================================================================================
         // [CONFIGURATION]
         const FILE_PREFIX_TARGET = "CPXSourceList_"; 
-        const DATABASE_URL = ""; 
         // ==========================================================================================
 
         // Icons
@@ -66,26 +63,33 @@
         const Upload = (props) => <IconBase {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></IconBase>;
         const Server = (props) => <IconBase {...props}><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></IconBase>;
 
-        const DEMO_DATABASE = [];
-
-        // --- Web Worker Code ---
+        // --- NEW ARCHITECTURE: Worker holds data, Main thread only receives results ---
         const workerCode = `
         importScripts('https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js');
+
+        // GLOBAL STORE IN WORKER
+        let GLOBAL_DB = [];
+
         const sanitize = (str) => {
             if (!str) return '';
             return String(str).replace(/[\\u00A0\\u1680\\u180e\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufeff]/g, ' ').replace(/\\s+/g, ' ').trim();
         };
+
         self.onmessage = function(e) {
-            const { data, type } = e.data;
+            const { type, data, query } = e.data;
+
             if (type === 'PARSE') {
                 try {
                     const workbook = XLSX.read(data, { type: 'array' });
-                    const allRows = [];
+                    GLOBAL_DB = []; // Reset DB
                     let uniqueIdCounter = 0;
+
                     workbook.SheetNames.forEach(sheetName => {
                         const worksheet = workbook.Sheets[sheetName];
                         const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
                         let headerIdx = -1, colMap = {};
+                        
+                        // Detect headers
                         for (let i = 0; i < Math.min(rawData.length, 100); i++) {
                             const row = (rawData[i] || []).map(c => sanitize(c).toLowerCase());
                             if (row.some(cell => cell.includes('source title') || cell.includes('journal name') || cell === 'issn')) {
@@ -102,10 +106,13 @@
                                 break;
                             }
                         }
+
                         if (headerIdx !== -1) {
                             const rows = rawData.slice(headerIdx + 1);
                             const getVal = (row, key) => colMap[key] !== undefined ? sanitize(row[colMap[key]] || '') : '';
-                            allRows.push(...rows.map(r => {
+                            
+                            // Parse and Store in Worker Memory ONLY
+                            const sheetRows = rows.map(r => {
                                 let title = getVal(r, 'title');
                                 if (!title) return null;
                                 return {
@@ -117,27 +124,65 @@
                                     country: getVal(r, 'country') || '-',
                                     language: getVal(r, 'lang') || '-'
                                 };
-                            }).filter(r => r !== null));
+                            }).filter(r => r !== null);
+                            
+                            GLOBAL_DB.push(...sheetRows);
                         }
                     });
-                    self.postMessage({ success: true, rows: allRows });
+
+                    // Notify main thread that parsing is done, BUT DO NOT SEND DATA yet
+                    self.postMessage({ type: 'INIT_COMPLETE', total: GLOBAL_DB.length });
+
                 } catch (err) {
-                    self.postMessage({ success: false, error: err.message });
+                    self.postMessage({ type: 'ERROR', error: err.message });
                 }
+            }
+
+            if (type === 'SEARCH') {
+                if (!GLOBAL_DB.length) {
+                    self.postMessage({ type: 'SEARCH_RESULTS', rows: [], totalMatches: 0, isTruncated: false });
+                    return;
+                }
+
+                let results = GLOBAL_DB;
+                const safeLimit = 3000; // Mobile Safety Limit
+
+                if (query && query.trim()) {
+                    const q = query.toLowerCase().trim();
+                    results = GLOBAL_DB.filter(item => item.title && item.title.toLowerCase().includes(q));
+                }
+
+                const totalMatches = results.length;
+                const isTruncated = totalMatches > safeLimit;
+                
+                // Only send the sliced results to Main Thread to prevent memory crash
+                const rowsToSend = isTruncated ? results.slice(0, safeLimit) : results;
+
+                self.postMessage({ 
+                    type: 'SEARCH_RESULTS', 
+                    rows: rowsToSend, 
+                    totalMatches: totalMatches,
+                    isTruncated: isTruncated 
+                });
             }
         };
         `;
 
         const App = () => {
-            const [unifiedData, setUnifiedData] = useState(DEMO_DATABASE);
-            const [displayData, setDisplayData] = useState(DEMO_DATABASE);
+            // "unifiedData" is REMOVED to save memory. Main thread only holds "displayData".
+            const [displayData, setDisplayData] = useState([]);
             const [inputValue, setInputValue] = useState('');
             const [debouncedTerm, setDebouncedTerm] = useState('');
-            const [isParsing, setIsParsing] = useState(false);
+            
+            const [isParsing, setIsParsing] = useState(false); // Parsing Excel
+            const [isSearching, setIsSearching] = useState(false); // Searching in Worker
             const [loadingStatus, setLoadingStatus] = useState('');
             const [errorMsg, setErrorMsg] = useState(null);
+            
             const [stats, setStats] = useState({ total: 0, lastUpdated: '-', source: 'INIT', filename: '' });
             const [isFileLoaded, setIsFileLoaded] = useState(false);
+            const [isTruncated, setIsTruncated] = useState(false); // State for truncation warning
+            
             const [isPrinting, setIsPrinting] = useState(false);
             const [isLocalMode, setIsLocalMode] = useState(false);
             
@@ -157,18 +202,30 @@
             useEffect(() => {
                 const blob = new Blob([workerCode], { type: 'application/javascript' });
                 workerRef.current = new Worker(URL.createObjectURL(blob));
+
                 workerRef.current.onmessage = (e) => {
-                    const { success, rows, error } = e.data;
-                    if (success) {
-                        setUnifiedData(rows);
-                        setDisplayData(rows);
-                        setStats(prev => ({ ...prev, total: rows.length, lastUpdated: new Date().toLocaleDateString() }));
+                    const { type, total, rows, error, totalMatches, isTruncated: truncated } = e.data;
+
+                    if (type === 'INIT_COMPLETE') {
+                        // Data loaded in Worker. Main thread doesn't hold data.
+                        setStats(prev => ({ ...prev, total: total, lastUpdated: new Date().toLocaleDateString() }));
                         setIsFileLoaded(true);
-                    } else {
-                        setErrorMsg({ text: `Parsing Failed: ${String(error)}`, code: "WORKER_ERR" });
+                        setIsParsing(false);
+                        setLoadingStatus('');
+                        
+                        // Trigger initial empty search to fill table (capped)
+                        workerRef.current.postMessage({ type: 'SEARCH', query: '' });
                     }
-                    setIsParsing(false);
-                    setLoadingStatus('');
+                    else if (type === 'SEARCH_RESULTS') {
+                        setDisplayData(rows);
+                        setIsTruncated(truncated);
+                        setIsSearching(false);
+                    }
+                    else if (type === 'ERROR') {
+                        setErrorMsg({ text: `Parsing Failed: ${String(error)}`, code: "WORKER_ERR" });
+                        setIsParsing(false);
+                        setLoadingStatus('');
+                    }
                 };
                 return () => workerRef.current.terminate();
             }, []);
@@ -187,18 +244,16 @@
                 }
             }, []);
 
+            // Debounce Input and trigger SEARCH on Worker
             useEffect(() => {
                 const timer = setTimeout(() => {
-                    setDebouncedTerm(inputValue);
-                    if (!inputValue.trim()) {
-                        setDisplayData(unifiedData);
-                    } else {
-                        const query = inputValue.toLowerCase().trim();
-                        setDisplayData(unifiedData.filter(item => (item.title && item.title.toLowerCase().includes(query))));
+                    if (isFileLoaded) {
+                        setIsSearching(true);
+                        workerRef.current.postMessage({ type: 'SEARCH', query: inputValue });
                     }
                 }, 300);
                 return () => clearTimeout(timer);
-            }, [inputValue, unifiedData]);
+            }, [inputValue, isFileLoaded]);
 
             const handleGitHubAutoFetch = async () => {
                 setIsParsing(true);
@@ -233,12 +288,15 @@
                     setStats(prev => ({ ...prev, filename: newestFile.name }));
                     setLoadingStatus(`Downloading: ${newestFile.name}...`);
                     
-                    const fileResponse = await fetch(`./${newestFile.name}?t=${new Date().getTime()}`);
+                    const timestamp = new Date().getTime(); // Cache busting
+                    const fileResponse = await fetch(`./${newestFile.name}?t=${timestamp}`);
                     if (!fileResponse.ok) throw new Error("Download failed.");
                     const buffer = await fileResponse.arrayBuffer();
                     
-                    setLoadingStatus('Parsing data...');
+                    setLoadingStatus('Parsing data (Worker)...');
+                    // Send buffer to worker. Worker KEEPS it.
                     workerRef.current.postMessage({ type: 'PARSE', data: new Uint8Array(buffer) });
+
                 } catch (error) {
                     console.warn(error);
                     setErrorMsg({ text: error.message, code: "FETCH_ERR" });
@@ -277,7 +335,6 @@
                             .virtual-container { position: static !important; height: auto !important; overflow: visible !important; }
                             .print-row { page-break-inside: avoid; display: flex !important; align-items: flex-start !important; border-bottom: 1px solid #ddd; padding: 10px 0; }
                             .print-row div { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
-                            /* Define Print Column Widths to ensure fit on A4 Landscape */
                             .col-title { width: 30% !important; }
                             .col-issn { width: 12% !important; }
                             .col-eissn { width: 12% !important; }
@@ -287,9 +344,8 @@
                         }
                     `}</style>
 
-                    {/* Header: Responsive Flex Wrap */}
+                    {/* Header */}
                     <header className="bg-white border-b border-gray-200 px-4 py-3 flex flex-wrap items-center justify-between shadow-sm shrink-0 gap-3 no-print z-10">
-                        {/* 1. Title Section */}
                         <div className="flex items-center gap-3 shrink-0 mr-auto">
                             <div className={`p-2 rounded-lg ${isLocalMode ? 'bg-orange-500' : 'bg-slate-800'}`}>
                                 <Database className="text-white w-5 h-5" />
@@ -306,7 +362,6 @@
                             </div>
                         </div>
 
-                        {/* 2. Search Section: Grows to fill space, moves to new line on very small screens */}
                         <div className="relative flex-grow w-full md:w-auto order-last md:order-none mt-2 md:mt-0">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                             <input
@@ -317,14 +372,13 @@
                                 onChange={(e) => setInputValue(e.target.value)}
                                 disabled={!isFileLoaded}
                             />
-                            {inputValue !== debouncedTerm && (
+                            { (inputValue !== debouncedTerm || isSearching) && (
                                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
                                     <RefreshCw className="w-3 h-3 text-slate-400 animate-spin" />
                                 </div>
                             )}
                         </div>
 
-                        {/* 3. Actions Section */}
                         <div className="flex items-center gap-2 shrink-0">
                             {isFileLoaded && (
                                 <button onClick={handlePrint} className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg font-bold hover:bg-slate-50 transition-all text-xs shadow-sm whitespace-nowrap">
@@ -339,7 +393,7 @@
                             <h1 className="text-2xl font-bold">Search Report</h1>
                             <div className="flex justify-between mt-2 text-sm">
                                 <span>Keywords: {inputValue || "(Show All)"}</span>
-                                <span>Total {displayData.length.toLocaleString()} records</span>
+                                <span>Total Matches: {displayData.length} (Database: {stats.total.toLocaleString()})</span>
                                 <span>Database: {formatDatabaseVersion(stats.filename)}</span>
                             </div>
                         </div>
@@ -369,14 +423,22 @@
                             </div>
                         )}
 
+                        {/* TRUNCATION WARNING */}
+                        {isTruncated && isFileLoaded && (
+                            <div className="bg-amber-50 border-b border-amber-200 text-amber-800 px-4 py-2 text-xs flex items-center justify-center gap-2 no-print">
+                                <AlertTriangle className="w-3 h-3" />
+                                <span>Displaying top 3,000 results. Please enter keywords to narrow down.</span>
+                            </div>
+                        )}
+
                         {isFileLoaded && (
-                            <VirtualTable data={displayData} totalCount={stats.total} isPrinting={isPrinting} />
+                            <VirtualTable data={displayData} isPrinting={isPrinting} />
                         )}
                         
                         {/* Footer Info Bar */}
                         {isFileLoaded && (
                             <div className="bg-slate-50 text-slate-400 text-[10px] py-2 px-4 border-t border-slate-200 text-center shrink-0 print:hidden">
-                                Showing {displayData.length.toLocaleString()} / Total {stats.total.toLocaleString()} records
+                                Showing {displayData.length.toLocaleString()} {isTruncated ? '(Truncated)' : ''} / Database Total {stats.total.toLocaleString()} records
                             </div>
                         )}
                     </main>
@@ -397,7 +459,6 @@
                     const handleScroll = (e) => setScrollTop(e.target.scrollTop);
                     const parent = parentRef.current;
                     parent.addEventListener('scroll', handleScroll);
-                    // Add resize listener to update height on orientation change
                     const handleResize = () => setContainerHeight(parent.clientHeight);
                     window.addEventListener('resize', handleResize);
                     return () => {
@@ -419,32 +480,22 @@
                 startSpacerHeight = start * rowHeight;
             }
 
-            // Fixed Column Widths for horizontal scrolling
-            // Total min-width: 350+120+120+200+120+120 = 1030px
             const colWidths = {
-                title: "min-w-[30%] max-w-[30%] shrink-0",     // 30% or roughly 300px
+                title: "min-w-[30%] max-w-[30%] shrink-0",    
                 issn: "min-w-[120px] max-w-[120px] shrink-0",
                 eissn: "min-w-[120px] max-w-[120px] shrink-0",
-                pub: "min-w-[20%] max-w-[20%] shrink-0",       // 20% or roughly 200px
+                pub: "min-w-[20%] max-w-[20%] shrink-0",       
                 country: "min-w-[120px] max-w-[120px] shrink-0",
                 lang: "min-w-[120px] max-w-[120px] shrink-0"
             };
             
-            // On mobile, we enforce a strict minimum width to force horizontal scrolling
             const minTableWidth = "min-w-[1000px]";
 
             return (
                 <div className="flex flex-col h-full print:h-auto overflow-hidden relative">
-                    {/* Table Header: Sticky horizontal scrolling synced via CSS is hard, so we put it inside the scroll container? 
-                        Actually, putting header and body in same scroll container is best for simple syncing. 
-                    */}
-                    
                     <div ref={parentRef} className={`flex-1 overflow-auto custom-scrollbar print:overflow-visible ${isPrinting ? '' : 'w-full'}`}>
                         <div className={`${isPrinting ? '' : minTableWidth} ${isPrinting ? 'h-auto' : ''}`} style={{ height: isPrinting ? 'auto' : totalHeight + 40 }}>
                             
-                            {/* Header Row - positioned absolute or just at top? 
-                                For virtual scroll with horizontal scroll, sticky header is best.
-                            */}
                             <div className={`sticky top-0 z-10 bg-slate-100 border-b border-slate-300 flex text-[11px] font-bold text-slate-700 uppercase tracking-wider shadow-sm print:hidden ${minTableWidth}`}>
                                 <div className={`px-4 py-3 border-r border-slate-200 ${colWidths.title} w-[30%]`}>Source Title</div>
                                 <div className={`px-3 py-3 border-r border-slate-200 text-center ${colWidths.issn}`}>ISSN</div>
@@ -454,7 +505,6 @@
                                 <div className={`px-3 py-3 ${colWidths.lang}`}>Language</div>
                             </div>
                             
-                            {/* Print Header (Simple) */}
                             <div className="hidden print:flex text-[10px] font-bold border-b border-black mb-2">
                                 <div className="col-title">Source Title</div>
                                 <div className="col-issn text-center">ISSN</div>
@@ -473,7 +523,6 @@
                                         className={`flex text-sm hover:bg-blue-50 transition-colors group border-b border-slate-100 items-start py-2 ${isPrinting ? 'print-row' : minTableWidth}`}
                                         style={{ height: isPrinting ? 'auto' : 'auto', minHeight: isPrinting ? 0 : rowHeight }} 
                                     >
-                                        {/* Desktop/Mobile View */}
                                         <div className={`px-4 leading-snug whitespace-normal break-words border-r border-transparent group-hover:border-slate-200 text-slate-700 font-medium ${colWidths.title} w-[30%] print:col-title`} title={item.title}>
                                             {item.title}
                                         </div>
